@@ -14,6 +14,15 @@ from selenium.webdriver.common.keys import Keys
     I AM NOT RESPONSIBLE IF YOUR ACCOUNT GETS BANNED. CONSULT THE
     TERMS AND CONDITIONS OF WHATSAPP AND PROCEED WITH CAUTION.
     https://www.whatsapp.com/legal/
+
+    Functions found here:
+        checkFolder()                : Checks if the folder 'LOGs' exists, to save logs 
+        randDist(mu, sig, low, high) : Generates random time from a gaussian distribuiton for sleep function
+        openWebsite(url)             : Opens the WhatsApp Web website
+        openContact(driver, number)  : Opens the URL for the person to send the message to
+        sendMessages(driver, text)   : Sends the text message to the person
+        saveLOG(success, failed)     : Saves the LOGs
+        main(numbers, text, save)    : Controls the flow loop
 '''
 # -----------------------------------------------------
 # Function to check if CSV/ exists. Else, creates it

@@ -20,6 +20,12 @@ import csv, WhatsApp, argparse, time
         1. Name, Number, Email
         2. Asdf, +YYY-XXXXXXXXXX
         3. Qwer, +YYY XXXXXXXXXX
+
+    Functions found here:
+        readCSV(fileName)       : Opens a CSV file to get the phone numbers
+        process(rawCSV, isd)    : Does basic processing on phone numbers to convert it into the input type expected by WhatsApp
+        readTXT(filename)       : Opens the text file which stores the message to be sent
+        sendMsgs(numbers, text) : Sends the message to all the numbers
 '''
 # -----------------------------------------------------
 # This funciton opens the CSV file to get the name and numbers
@@ -89,19 +95,19 @@ def readTXT(filename):
     return text
 # -----------------------------------------------------
 # Function to send messages
-def sendMsgs(numbers, text):
+def sendMsgs(numbers, text, save):
     '''
         INPUTS : numbers (list of phone numbers), text (message body; string)
         OUTPUT : None
     '''
-    stats = WhatsApp.main(numbers, text)
+    stats = WhatsApp.main(numbers, text, save)
     print("Messages Sent")
     print("\033[32mSuccessful {}\033[00m, \033[91mFailed\033[00m {}".format(stats[0], stats[1]))
     print("Success Rate : {}".format(stats[0]/(stats[0]+stats[1])))
     print("Open the folder 'LOGs' for further details")
 # -----------------------------------------------------
 # Main function
-def main(csvFile, textFile, ISD):
+def main(csvFile, textFile, ISD, save):
     '''
         INPUTS : csvFile (path to csv file; string), textFile(path to message body; string), ISD (country code; string)
         OUTPUT : None
@@ -110,7 +116,7 @@ def main(csvFile, textFile, ISD):
     raw = readCSV(csvFile)
     data = process(raw, ISD)
     msg = readTXT(textFile)
-    sendMsgs(data, msg)
+    sendMsgs(data, msg, save)
 # -----------------------------------------------------
 if __name__ == "__main__":
     # Sets start time to find how long it took to execute
@@ -121,10 +127,11 @@ if __name__ == "__main__":
     parser.add_argument('-f', '--csvFile', help="Use this flag to specify the path to the csv file to load the data from")
     parser.add_argument('-t', '--textFile', help="Use this flag to specify the path to the text file to load message body from")
     parser.add_argument('-i', '--ISD', default='91', help="Use this flag to specify the ISD code to assume when it isn't specified in the CSV")
+    parser.add_argument('-s', '--save', default=True, help="Use this flag to specify whether the logs should be saved or not")
     args = parser.parse_args()
 
     # Calls main function
-    main(args.csvFile, args.textFile, args.ISD)
+    main(args.csvFile, args.textFile, args.ISD, args.save)
 
     # Prints the time it took to run the script
     print("Executed in {}s".format(time.time()-t1))
