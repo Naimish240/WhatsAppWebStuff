@@ -20,10 +20,17 @@ NOTE:
     UPDATE:
         - Added GeckoDriver support; Firefox should work now
 
+Links:
+    ChromeDriver install : https://chromedriver.chromium.org/getting-started
+    GeckoDriver  install : https://github.com/mozilla/geckodriver
+    Selenium (reference) : https://www.selenium.dev/
+
+    If something doesn't work, StackOverFlow and Google are your friends.
+
 Usage:
     Consult the 'examples' folder for details on usage
 
-Dependancies:
+Python Dependancies:
     astroid==2.4.2
     isort==5.4.2
     lazy-object-proxy==1.4.3
