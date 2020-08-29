@@ -8,6 +8,11 @@ DON"T BE STUPID. DON'T DO ILLEGAL STUFF WITH MY CODE PLEASE.
 https://www.whatsapp.com/legal/
 
 NOTE :
+    The virtual environment "env" which ships with the program was made
+    with Pop_OS! 20.04, and might not work on other distros. So if things
+    don't work, this might be a reason why. Delete the env and then install
+    the required modules from "requirements.txt"
+
     Requires Chromium WebDriver and Python 3.6+ to work properly
     If you come across any bugs, submit an issue. I'll work on fixing it.
     If you're able to fix the bug, then send a PR. I'll merge after review.
