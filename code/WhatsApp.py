@@ -50,13 +50,19 @@ def randDist(mu, sig, low, high):
     return x
 # -----------------------------------------------------
 # This function opens up the whatsapp web website
-def openWebsite(url):
+def openWebsite(url, browser):
     '''
         INPUTS : url (url of website, string)
         OUTPUT : driver (selenium object)
     '''
-    # Creates a chromedriver object and opens the url
-    driver = webdriver.Chrome()
+    # Loads the browser
+    if browser.lower() == 'chrome':
+        # Creates a chromedriver object
+        driver = webdriver.Chrome()
+    elif browser.lower() == 'firefox':
+        # Creates a geckodriver object
+        driver = webdriver.Firefox()
+    # Opens the URL
     driver.get(url)
     print("Scan QR Code")
     # Waits for 20 seconds for user to authenticate session from their phone
@@ -117,7 +123,7 @@ def saveLOG(success, failed):
         csvwriter.writerows(data)
 # -----------------------------------------------------
 # Main function, called externally
-def main(numbers, text, save=True):
+def main(numbers, text, save=True, browser='Chrome'):
     '''
         INPUTS : data (list of numbers and the corresponding messages to be sent)
         OUTPUT : res (list, count of [successful, failed])
@@ -131,7 +137,7 @@ def main(numbers, text, save=True):
     try:
         # Opens website
         print("Opening website")
-        driver = openWebsite("https://web.whatsapp.com")
+        driver = openWebsite("https://web.whatsapp.com", browser)
         # QR code scanned successfully
         print("Session Authenticated!")
     except:

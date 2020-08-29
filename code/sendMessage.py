@@ -95,19 +95,19 @@ def readTXT(filename):
     return text
 # -----------------------------------------------------
 # Function to send messages
-def sendMsgs(numbers, text, save):
+def sendMsgs(numbers, text, save, browser):
     '''
         INPUTS : numbers (list of phone numbers), text (message body; string)
         OUTPUT : None
     '''
-    stats = WhatsApp.main(numbers, text, save)
+    stats = WhatsApp.main(numbers, text, save, browser)
     print("Messages Sent")
     print("\033[32mSuccessful {}\033[00m, \033[91mFailed\033[00m {}".format(stats[0], stats[1]))
     print("Success Rate : {}".format(stats[0]/(stats[0]+stats[1])))
     print("Open the folder 'LOGs' for further details")
 # -----------------------------------------------------
 # Main function
-def main(csvFile, textFile, ISD, save):
+def main(csvFile, textFile, ISD, save, browser):
     '''
         INPUTS : csvFile (path to csv file; string), textFile(path to message body; string), ISD (country code; string)
         OUTPUT : None
@@ -116,7 +116,7 @@ def main(csvFile, textFile, ISD, save):
     raw = readCSV(csvFile)
     data = process(raw, ISD)
     msg = readTXT(textFile)
-    sendMsgs(data, msg, save)
+    sendMsgs(data, msg, save, browser)
 # -----------------------------------------------------
 if __name__ == "__main__":
     # Sets start time to find how long it took to execute
@@ -128,10 +128,18 @@ if __name__ == "__main__":
     parser.add_argument('-t', '--textFile', help="Use this flag to specify the path to the text file to load message body from")
     parser.add_argument('-i', '--ISD', default='91', help="Use this flag to specify the ISD code to assume when it isn't specified in the CSV")
     parser.add_argument('-s', '--save', default=True, help="Use this flag to specify whether the logs should be saved or not")
+    parser.add_argument('-b', '--browser', default='Chrome', help="Use this flag to specify which browser to use")
     args = parser.parse_args()
 
+    print("State at Initialization")
+    print("Browser used             : {}".format(args.browser))
+    print("CSV file to read from    : {}".format(args.csvFile))
+    print("Text file to read from   : {}".format(args.textFile))
+    print("Country code from ISD    : {}".format(args.ISD))
+    print("Saving Log?              : {}".format(args.save))
+
     # Calls main function
-    main(args.csvFile, args.textFile, args.ISD, args.save)
+    main(args.csvFile, args.textFile, args.ISD, args.save, args.browser)
 
     # Prints the time it took to run the script
     print("Executed in {}s".format(time.time()-t1))

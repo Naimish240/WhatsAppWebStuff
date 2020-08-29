@@ -1,13 +1,13 @@
 This contains scripts for automating sending messages over WhatsApp Web
 
-DISCLAIMER :
+DISCLAIMER:
 I AM NOT RESPONSIBLE IF YOUR ACCOUNT GETS BANNED. CONSULT THE
 TERMS AND CONDITIONS OF WHATSAPP AND PROCEED WITH CAUTION.
 DON"T BE STUPID. DON'T DO ILLEGAL STUFF WITH MY CODE PLEASE.
 
 https://www.whatsapp.com/legal/
 
-NOTE :
+NOTE:
     The virtual environment "env" which ships with the program was made
     with Pop_OS! 20.04, and might not work on other distros. So if things
     don't work, this might be a reason why. Delete the env and then install
@@ -16,6 +16,9 @@ NOTE :
     Requires Chromium WebDriver and Python 3.6+ to work properly
     If you come across any bugs, submit an issue. I'll work on fixing it.
     If you're able to fix the bug, then send a PR. I'll merge after review.
+
+    UPDATE:
+        - Added GeckoDriver support; Firefox should work now
 
 Usage:
     Consult the 'examples' folder for details on usage
