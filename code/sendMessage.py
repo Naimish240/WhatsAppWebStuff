@@ -147,7 +147,7 @@ if __name__ == "__main__":
     parser.add_argument('-i', '--ISD', default='91', help="Use this flag to specify the ISD code to assume when it isn't specified in the CSV")
     parser.add_argument('-s', '--save', default=True, help="Use this flag to specify whether the logs should be saved or not")
     parser.add_argument('-b', '--browser', default='Chrome', help="Use this flag to specify which browser to use")
-    parser.add_argument('-s', '--twilio', default=None, help="Use this flag to pass the path to the 'secrets.json' file to access Twilio API")
+    parser.add_argument('-k', '--twilio', default=None, help="Use this flag to pass the path to the 'secrets.json' file to access Twilio API")
     args = parser.parse_args()
 
     print("State at Initialization")
