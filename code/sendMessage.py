@@ -6,7 +6,7 @@
 # message template from the user and sends the messages
 # using WhatsApp Web
 # -----------------------------------------------------
-import csv, WhatsApp, argparse, time
+import csv, WhatsApp, argparse, time, twilioAPI
 # -----------------------------------------------------
 '''
     CSV File Structure Supported in the funciton readCSV():
@@ -20,6 +20,14 @@ import csv, WhatsApp, argparse, time
         1. Name, Number, Email
         2. Asdf, +YYY-XXXXXXXXXX
         3. Qwer, +YYY XXXXXXXXXX
+
+    secrets.json structure:
+    
+        {
+            'account' : "Your Account Key Here"
+            'token'   : "Your Access Token Here"
+            'fr'      : "Your Twilio Number Here"
+        }
 
     Functions found here:
         readCSV(fileName)       : Opens a CSV file to get the phone numbers
@@ -101,22 +109,32 @@ def sendMsgs(numbers, text, save, browser):
         OUTPUT : None
     '''
     stats = WhatsApp.main(numbers, text, save, browser)
-    print("Messages Sent")
-    print("\033[32mSuccessful {}\033[00m, \033[91mFailed\033[00m {}".format(stats[0], stats[1]))
-    print("Success Rate : {}".format(stats[0]/(stats[0]+stats[1])))
-    print("Open the folder 'LOGs' for further details")
+
+    # If sign in successful
+    if stats:
+        print("Messages Sent")
+        print("\033[32mSuccessful {}\033[00m, \033[91mFailed\033[00m {}".format(stats[0], stats[1]))
+        print("Fraction of messages successfully sent : {}".format(stats[0]/(stats[0]+stats[1])))
+        print("Open the folder 'LOGs' for further details")
+    # Failed to run successfully
+    else:
+        print("\033[91mError! Authentication Failed! Try again later\033[00m")
 # -----------------------------------------------------
 # Main function
-def main(csvFile, textFile, ISD, save, browser):
+def main(csvFile, textFile, ISD, save, browser, twilio):
     '''
-        INPUTS : csvFile (path to csv file; string), textFile(path to message body; string), ISD (country code; string)
+        INPUTS : csvFile (path to csv file; string), textFile(path to message body; string), ISD (country code; string), browser (Chrome/Firefox; string), twilio (Path to secrets.json; string)
         OUTPUT : None
     '''
     # Function Calls
     raw = readCSV(csvFile)
     data = process(raw, ISD)
     msg = readTXT(textFile)
-    sendMsgs(data, msg, save, browser)
+    # Checks if using twilio or selenium
+    if browser:
+        sendMsgs(data, msg, save, browser)
+    elif twilio:
+        twilioAPI.main(data, msg, save, twilio)
 # -----------------------------------------------------
 if __name__ == "__main__":
     # Sets start time to find how long it took to execute
@@ -129,17 +147,23 @@ if __name__ == "__main__":
     parser.add_argument('-i', '--ISD', default='91', help="Use this flag to specify the ISD code to assume when it isn't specified in the CSV")
     parser.add_argument('-s', '--save', default=True, help="Use this flag to specify whether the logs should be saved or not")
     parser.add_argument('-b', '--browser', default='Chrome', help="Use this flag to specify which browser to use")
+    parser.add_argument('-s', '--twilio', default=None, help="Use this flag to pass the path to the 'secrets.json' file to access Twilio API")
     args = parser.parse_args()
 
     print("State at Initialization")
-    print("Browser used             : {}".format(args.browser))
+
+    if args.twilio:
+        print("Reading API Keys from {}".format(args.twilio))
+    else:
+        print("Browser used             : {}".format(args.browser))
+
     print("CSV file to read from    : {}".format(args.csvFile))
     print("Text file to read from   : {}".format(args.textFile))
     print("Country code from ISD    : {}".format(args.ISD))
     print("Saving Log?              : {}".format(args.save))
 
     # Calls main function
-    main(args.csvFile, args.textFile, args.ISD, args.save, args.browser)
+    main(args.csvFile, args.textFile, args.ISD, args.save, args.browser, args.twilio)
 
     # Prints the time it took to run the script
     print("Executed in {}s".format(time.time()-t1))
