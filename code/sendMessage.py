@@ -59,6 +59,8 @@ def process(rawCSV, isd):
     isd = isd.replace('+', '')
     isd = isd.replace('-', '')
     isd = isd.replace(' ', '')
+    isd = isd.replace('(', '')
+    isd = isd.replace(')', '')
     # List to store numbers
     numbers = []
     for row in rawCSV:
@@ -73,6 +75,8 @@ def process(rawCSV, isd):
             xx = xx.replace('+', '')
             xx = xx.replace('-', '')
             xx = xx.replace(' ', '')
+            xx = xx.replace(')', '')
+            xx = xx.replace('(', '')
             # Number without fancy characters is 10 digits long, so adds isd
             if len(xx) == 10:
                 numbers.append(isd + str(xx))

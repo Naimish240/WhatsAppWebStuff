@@ -55,13 +55,21 @@ def openWebsite(url, browser):
         INPUTS : url (url of website, string)
         OUTPUT : driver (selenium object)
     '''
-    # Loads the browser
-    if browser.lower() == 'chrome':
-        # Creates a chromedriver object
-        driver = webdriver.Chrome()
-    elif browser.lower() == 'firefox':
-        # Creates a geckodriver object
-        driver = webdriver.Firefox()
+    # Tries to load drivers from PATH, if configured properly
+    try:
+        # Loads the browser
+        if browser.lower() == 'chrome':
+            # Creates a chromedriver object
+            driver = webdriver.Chrome()
+        elif browser.lower() == 'firefox':
+            # Creates a geckodriver object
+            driver = webdriver.Firefox()
+    # Unable to load driver. Prompts user to download and save in this folder
+    except:
+        print("Error! Unable to locate the webdriver")
+        print("Download the driver and save the executable in the 'code/' folder!")
+        return None
+
     # Opens the URL
     driver.get(url)
     print("Scan QR Code")
@@ -143,6 +151,11 @@ def main(numbers, text, save=True, browser='Chrome'):
     except:
         # Unsuccessful attempt
         print("Unable to connect to website! Check your connection!")
+        return None
+
+    # Drivers haven't been configured properly
+    if not driver:
+        print("Driver not configured properly!")
         return None
 
     # If successfully signed in
