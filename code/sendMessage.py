@@ -17,7 +17,7 @@ import csv, WhatsApp, argparse, time, twilioAPI
         3. Qwer, XXXXXXXXXX
 
     b. Country in Number; use '-' or ' ' to seperate country code from number. If not found, pass default value in function call
-        1. Name, Number, Email
+        1. Name, Number
         2. Asdf, +YYY-XXXXXXXXXX
         3. Qwer, +YYY XXXXXXXXXX
 
@@ -77,6 +77,7 @@ def process(rawCSV, isd):
             xx = xx.replace(' ', '')
             xx = xx.replace(')', '')
             xx = xx.replace('(', '')
+            xx = xx.lstrip('0')
             # Number without fancy characters is 10 digits long, so adds isd
             if len(xx) == 10:
                 numbers.append(isd + str(xx))
